@@ -2,8 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
+// ANTD-MOBILE
+import { ConfigProvider } from "antd-mobile";
+// antd国际化
+import zhCN from 'antd-mobile/es/locales/zh-CN'
+
 // REM
 import 'lib-flexible';
+// 样式
+import './assets/reset.min.css'
+import './index.less'
+
+
 // 处理最大宽度
 (function(){
     const handleMax = function handleMax(){
@@ -22,5 +32,7 @@ import 'lib-flexible';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App />
+    <ConfigProvider locale={zhCN}>
+        <App />
+    </ConfigProvider>
 );
