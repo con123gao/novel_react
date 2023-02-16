@@ -1,5 +1,6 @@
 import React from 'react'
 import { Skeleton } from 'antd-mobile'
+import './SkeletonAgain.less'
 /**
  * 对于骨架屏的二次封装
  * @returns 

@@ -3,9 +3,11 @@
     // 轮播图
     .swiper-box {
         box-sizing: border-box;
-        width: 750px;
+        width: 600px;
         height: 750px;
         background-color: #DDD;
+        margin-left: auto;
+        margin-right: auto;
 
         .adm-swiper {
             height: 100%;
@@ -28,15 +30,16 @@
                 box-sizing: border-box;
                 width: 100%;
                 padding: 0 30px;
-                
+
                 .title {
                     font-size: 36px;
                     color: #FFF;
                 }
+
                 .author {
                     line-height: 60px;
                     font-size: 28px;
-                    color: rgba(255,255,255,.7);
+                    color: rgba(255, 255, 255, .7);
                 }
             }
 
@@ -52,7 +55,7 @@
                 margin: 0 6px;
                 width: 10px;
                 height: 10px;
-                background-color: rgba(255,255,255,.7);
+                background-color: rgba(255, 255, 255, .7);
                 border-radius: 6px;
 
                 &.adm-page-indicator-dot-active {
@@ -60,6 +63,31 @@
                     background-color: #fff;
                 }
             }
+        }
+    }
+
+    // 分割线
+    .adm-divider-left.adm-divider-horizontal:before {
+        max-width: 50%;
+    }
+
+    // 新闻列表
+    .novels-box {
+        padding: 0 30px;
+    }
+
+    // 加载更多
+    .loadmore-box {
+        background-color: #EEE;
+        text-align: center;
+        height: 80px;
+        line-height: 80px;
+        color: #999;
+
+        .adm-dot-loading {
+            position: static;
+            transform: none;
+            font-size: 32px;
         }
     }
 }

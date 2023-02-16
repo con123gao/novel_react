@@ -6,6 +6,18 @@ const queryBanner = () => {
     return http.get('/api/getBanner');
 }
 
+//分页查询小说
+const queryNovelPage = (pageNum,pageSize,categoryId) => {
+    // ?pageNum=0&pageSize=1&categoryId=-1
+    return http.get('/api/getNovelByCategory',{
+        params: {
+            pageNum,
+            pageSize,
+            categoryId
+        }
+    })
+}
+
 //获取小说对应的章节
 const queryChapterById = (id) => {
     return http.get('/api/getChapterList', {
@@ -19,7 +31,9 @@ const queryChapterById = (id) => {
 // 暴露API
 const api = {
     queryBanner,
-    queryChapterById
+    queryChapterById,
+    queryNovelPage,
+    
 }
 
 export default api;
