@@ -27,13 +27,23 @@ const queryChapterById = (id) => {
     })
 }
 
+// 根据id获取 当前小说的详细信息
+const getNovelDetail = (id)=>{
+    return http.get('/api/getNovelDetail',{
+        params: {
+            id
+        }
+    })
+}
+
 
 // 暴露API
 const api = {
     queryBanner,
     queryChapterById,
     queryNovelPage,
-    
+    getNovelDetail,
+
 }
 
 export default api;
