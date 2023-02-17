@@ -1,6 +1,8 @@
 .chapter-box {
     // min-height: 100%;
 
+
+
     // 小说详情
     .novel-item-box {
         position: relative;
@@ -86,6 +88,15 @@
         line-height: 120px;
         font-size: 28px;
         border-bottom: 2px solid rgba(94, 88, 88, 0.1);
+        
+        color: #000;
+        display: block;
+        height: 100%;
+
+        // 被访问过的 颜色变浅
+        &.visited {
+            color: #999;
+        }
 
         .chapter-list-box {
             padding-left: 30px;

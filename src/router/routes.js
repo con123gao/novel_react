@@ -21,7 +21,7 @@ const routes = [
         }
     },
     {
-        path: '/show',
+        path: '/show/:novelId/:chapterId/:chapterName',
         name: 'show',
         component: lazy(()=>import('../views/Show')),
         meta: {

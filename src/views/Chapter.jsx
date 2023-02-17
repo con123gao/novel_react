@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import SkeletonAgain from '../components/SkeletonAgain'
 import { Swiper, Divider, DotLoading, Ellipsis, Image } from 'antd-mobile'
 import { TeamOutline } from 'antd-mobile-icons'
@@ -107,7 +108,7 @@ export default function Chapter(props) {
       <Divider >共{chapterCount}章</Divider>
       {/* 无限滚动 */}
       {
-        
+
         chapterList.length === 0 || !chapterList ?
           //  没有数据展示骨架屏 
           <SkeletonAgain /> :
@@ -115,11 +116,15 @@ export default function Chapter(props) {
             {/* 封装的每一条章节的组件 */}
             {
               chapterList.map(item => {
-                return <div className='chapter-list' key={item.chapterId}>
+                return <Link
+                  to={{ pathname: `/show/${item.novelId}/${item.chapterId}/${item.chapterName}` }}
+                  key={item.chapterId}
+                  className='chapter-list'
+                >
                   <div className="chapter-list-box" >
                     {item.chapterName}
                   </div>
-                </div>
+                </Link>
               })
 
             }
