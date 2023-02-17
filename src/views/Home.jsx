@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Swiper, Divider, DotLoading } from 'antd-mobile'
+import { Swiper, Divider, DotLoading, SearchBar,PickerView } from 'antd-mobile'
 
 import HomeHead from '../components/HomeHead'
 import NovelsItem from '../components/NovelsItem'
@@ -34,6 +34,20 @@ export default function Home() {
   // 小说列表，分页
   const [novelsList, setNovelsList] = useState([])
 
+  const testData =  [
+    [
+      { label: '周一' },
+      { label: '周二' },
+      { label: '周三'},
+      { label: '周四'},
+      { label: '周五' },
+    ],
+    // [
+    //   { label: '上午', value: 'am' },
+    //   { label: '下午', value: 'pm' },
+    // ],
+  ]
+
   // 第一次渲染完毕，向服务器发送数据请求
   useEffect(() => {
     (async () => {
@@ -57,7 +71,7 @@ export default function Home() {
       // isIntersecting为true，出现在视口中
       let { isIntersecting } = changes[0];
       if (isIntersecting) {
-        if (novelsList.length < novelCount){
+        if (novelsList.length < novelCount) {
           // 触底，加载更多数据
           try {
             setPageNum(pageNum + 1)
@@ -68,8 +82,8 @@ export default function Home() {
           } catch (_) {
 
           }
-        }else{
-          loadMore.current.innerText='到底了'
+        } else {
+          loadMore.current.innerText = '到底了'
         }
       }
     });
@@ -82,15 +96,29 @@ export default function Home() {
       ob.unobserve(loadMoreCache)
       ob = null
     }
-  }, [novelsList,novelCount])
+  }, [novelsList, novelCount])
 
 
 
 
   return (
     <div className='home-box'>
+      <i className="home-bg" />
       {/* 头部 */}
       <HomeHead today={today} />
+      {/* 搜索框 */}
+      <div className="search-box">
+        <SearchBar
+          placeholder='请输入内容'
+          showCancelButton
+          style={{
+            '--border-radius': '100px',
+            '--background': '#e2e5eb',
+            '--height': '34px',
+            '--padding-left': '12px',
+          }}
+        />
+      </div>
       {/* 轮播图 */}
       <div className='swiper-box'>
         {bannerData.length > 0 ?
@@ -114,9 +142,13 @@ export default function Home() {
           </Swiper>
           : null}
       </div>
+      
+
       {/* 小说列表 */}
       {/* 分割线 */}
       <Divider contentPosition='left'> xxx小说网</Divider>
+      {/* 分类 */}
+      <PickerView columns={testData} />
       {
         novelsList.length === 0 ?
           //  没有数据展示骨架屏 
