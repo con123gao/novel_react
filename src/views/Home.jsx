@@ -57,19 +57,20 @@ export default function Home() {
       // isIntersecting为true，出现在视口中
       let { isIntersecting } = changes[0];
       if (isIntersecting) {
-        if (novelsList.length < novelCount)
+        if (novelsList.length < novelCount){
           // 触底，加载更多数据
           try {
             setPageNum(pageNum + 1)
-            console.log(pageNum);
             let res = await api.queryNovelPage(pageNum + 1, pageSize, categoryId)
             // console.log(novelsList);
             novelsList.push(...res.data.rows)
-            console.log(novelsList)
             setNovelsList([...novelsList])
           } catch (_) {
 
           }
+        }else{
+          loadMore.current.innerText='到底了'
+        }
       }
     });
     let loadMoreCache = loadMore.current

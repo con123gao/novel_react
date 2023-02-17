@@ -1,0 +1,111 @@
+.chapter-box {
+    // min-height: 100%;
+
+    // 小说详情
+    .novel-item-box {
+        position: relative;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        padding: 30px 0;
+        margin-left: 30px;
+        height: 254px;
+        margin-bottom: 260px;
+
+        .adm-image {
+            position: absolute;
+            left: 0;
+            top: 30px;
+            // width: 104px;
+            // height: 130px;
+            width: 180px;
+            height: 240px;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .content {
+            margin-left: 200px;
+
+            .title {
+                font-size: 32px;
+                color: #000;
+            }
+
+            .author {
+                padding-top: 8px;
+                font-size: 26px;
+                color: #33373d;
+            }
+
+            .category {
+                padding-top: 8px;
+                font-size: 26px;
+                color: #33373d;
+            }
+
+            .viewCount {
+                padding-top: 8px;
+                font-size: 26px;
+                color: #33373d;
+
+                p {
+                    display: inline-block;
+                    font-size: 32px;
+                }
+            }
+
+            .updateTime {
+                padding-top: 8px;
+                color: #33373d;
+                font-size: 25px;
+                position: absolute;
+                left: 200px;
+                bottom: 0px;
+            }
+        }
+
+        .summary {
+            // .adm-ellipsis {
+            //     display: block;
+            //     font-size: 30px;
+            // }
+
+            margin-top: 100px;
+            font-size: 30px;
+            color: #33373d;
+        }
+
+    }
+
+    .chapter-list {
+        height: 120px;
+        line-height: 120px;
+        font-size: 28px;
+        border-bottom: 2px solid rgba(94, 88, 88, 0.1);
+
+        .chapter-list-box {
+            padding-left: 30px;
+        }
+    }
+
+
+
+    // 加载更多
+    .loadmore-box {
+        background-color: #EEE;
+        text-align: center;
+        height: 80px;
+        line-height: 80px;
+        color: #999;
+
+        .adm-dot-loading {
+            position: static;
+            transform: none;
+            font-size: 32px;
+        }
+    }
+}

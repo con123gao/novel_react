@@ -36,6 +36,16 @@ const getNovelDetail = (id)=>{
     })
 }
 
+// 分页获取当前小说的章节列表
+const getChapterPageListById = (pageNum,pageSize,novelId)=>{
+    return http.get('/api/getChapterPageListById',{
+        params: {
+            pageNum,
+            pageSize,
+            novelId
+        }
+    })
+}
 
 // 暴露API
 const api = {
@@ -43,6 +53,7 @@ const api = {
     queryChapterById,
     queryNovelPage,
     getNovelDetail,
+    getChapterPageListById,
 
 }
 
