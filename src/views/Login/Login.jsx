@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Toast, Button } from 'antd-mobile';
 import './Login.less';
-import NavBarAgain from '../components/NavBarAgain';
-import api from '../api';
-import _ from '../assets/utils';
+import NavBarAgain from '../../components/NavBarAgain/NavBarAgain';
+import api from '../../api';
+import _ from '../../assets/utils';
 
 export default function Login() {
 

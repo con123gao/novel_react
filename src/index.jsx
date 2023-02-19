@@ -26,6 +26,7 @@ import './index.less'
             // size=parseFloat(html.style.fontSize);
             deviceW = html.clientWidth;
         root.style.maxWidth = "750px";
+        root.style.height = '100%'
         if (deviceW >= 750) {
             html.style.fontSize = '75px';
         }

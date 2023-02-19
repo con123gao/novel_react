@@ -3,11 +3,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, Divider, DotLoading, SearchBar,PickerView } from 'antd-mobile'
 
-import HomeHead from '../components/HomeHead'
-import NovelsItem from '../components/NovelsItem'
-import SkeletonAgain from '../components/SkeletonAgain'
-import _ from '../assets/utils'
-import api from '../api'
+import HomeHead from '../../components/HomeHead/HomeHead'
+import NovelsItem from '../../components/NovelsItem/NovelsItem'
+import SkeletonAgain from '../../components/SkeletonAgain/SkeletonAgain'
+import _ from '../../assets/utils'
+import api from '../../api'
 
 import './Home.less'
 import { SoundMuteFill } from 'antd-mobile-icons'
@@ -148,7 +148,7 @@ export default function Home() {
       {/* 分割线 */}
       <Divider contentPosition='left'> xxx小说网</Divider>
       {/* 分类 */}
-      <PickerView columns={testData} />
+      {/* <PickerView columns={testData} /> */}
       {
         novelsList.length === 0 ?
           //  没有数据展示骨架屏 

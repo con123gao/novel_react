@@ -1,8 +1,9 @@
-import { lazy } from 'react'
-import Home from '../views/Home'
+import {
+    lazy
+} from 'react'
+import Home from '../views/Home/Home'
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'home',
         component: Home,
@@ -15,7 +16,7 @@ const routes = [
         path: '/chapter/:id',
         name: 'chapter',
         // 懒加载
-        component: lazy(()=>import('../views/Chapter')),
+        component: lazy(() => import('../views/Chapter/Chapter')),
         meta: {
             title: '章节'
         }
@@ -23,7 +24,7 @@ const routes = [
     {
         path: '/show/:novelId/:chapterId/:chapterName',
         name: 'show',
-        component: lazy(()=>import('../views/Show')),
+        component: lazy(() => import('../views/Show/Show')),
         meta: {
             title: '阅读'
         }
@@ -31,7 +32,7 @@ const routes = [
     {
         path: '/personal',
         name: 'personal',
-        component: lazy(()=>import('../views/Personal')),
+        component: lazy(() => import('../views/Personal/Personal')),
         meta: {
             title: '个人中心'
         }
@@ -39,7 +40,7 @@ const routes = [
     {
         path: '/store',
         name: 'store',
-        component: lazy(()=>import('../views/Store')),
+        component: lazy(() => import('../views/Store/Store')),
         meta: {
             title: '我的收藏'
         }
@@ -47,7 +48,7 @@ const routes = [
     {
         path: '/update',
         name: 'update',
-        component: lazy(()=>import('../views/Update')),
+        component: lazy(() => import('../views/Update/Update')),
         meta: {
             title: '修改个人信息'
         }
@@ -55,15 +56,23 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: lazy(()=>import('../views/Login')),
+        component: lazy(() => import('../views/Login/Login')),
         meta: {
             title: '登录/注册'
         }
     },
     {
+        path: 'chatgpt',
+        name: 'chatgpt',
+        component: lazy(() => import('../views/ChatGpt/ChatGpt')),
+        meta: {
+            title: 'chatGpt模块'
+        }
+    },
+    {
         path: '*',
         name: '404',
-        component: lazy(()=>import('../views/Page404')),
+        component: lazy(() => import('../views/Page404/Page404')),
         meta: {
             title: '访问资源不存在'
         }

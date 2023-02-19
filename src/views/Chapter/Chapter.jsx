@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import SkeletonAgain from '../components/SkeletonAgain'
+import SkeletonAgain from '../../components/SkeletonAgain/SkeletonAgain'
 import { Swiper, Divider, DotLoading, Ellipsis, Image } from 'antd-mobile'
 import { TeamOutline } from 'antd-mobile-icons'
 
 import './Chapter.less'
-import _ from '../assets/utils'
-import api from '../api'
+import _ from '../../assets/utils'
+import api from '../../api'
 // 章节页面
 export default function Chapter(props) {
 

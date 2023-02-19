@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import defaultImg from '../assets/images/default.png';
+import defaultImg from '../../assets/images/default.png';
 import './HomeHead.less'
 
 /**
