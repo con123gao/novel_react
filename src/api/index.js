@@ -47,6 +47,27 @@ const getChapterPageListById = (pageNum,pageSize,novelId)=>{
     })
 }
 
+/**
+ * chatGpt 模块
+ */
+// 获取回答
+const getAnSwer = (msg)=>{
+    return http.get('/api/getAnswer',{
+        params: {
+            msg
+        }
+    })
+}
+//获取图片
+const getImage = (input)=>{
+    return http.get('/api/getImage',{
+        params: {
+            input
+        }
+    })
+}
+
+
 // 暴露API
 const api = {
     queryBanner,
@@ -54,7 +75,8 @@ const api = {
     queryNovelPage,
     getNovelDetail,
     getChapterPageListById,
-
+    getAnSwer,
+    getImage
 }
 
 export default api;
