@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CapsuleTabs, NoticeBar, Divider, Image, Input } from 'antd-mobile'
-import { QuestionCircleOutline, PlayOutline } from 'antd-mobile-icons'
+import { CapsuleTabs, NoticeBar, Divider, Image, Input, Toast, Popover } from 'antd-mobile'
+import { QuestionCircleOutline, PlayOutline, ContentOutline, FileOutline } from 'antd-mobile-icons'
+import copy from 'copy-to-clipboard';
+
 // markdown样式
 import { marked } from 'marked' // 导入markdown转换器
 import hljs from 'highlight.js' // 导入markdown代码块高亮包
+import Highlight from 'react-highlight'
 import "highlight.js/styles/atom-one-light.css" // 代码块具体的高亮样式
 
 import _ from '../../assets/utils'
@@ -17,20 +20,22 @@ export default function ChatGpt() {
 
     // 用户 问答列表
     const [userInput, SetUserInput] = useState('')
+    const [imgInput, SetImgInput] = useState('可爱的布偶猫')
+    const [imgUrl, SetImgUrl] = useState('https://oaidalleapiprodscus.blob.core.windows.net/private/org-9rYx1Dz8dCC2cDMJTztqT9DC/user-NtGHdqh4KrTqp7bCVGMUNIg8/img-Kp3gaLrIo4fuDJc8TWmKhWly.png?st=2023-02-20T03%3A42%3A21Z&se=2023-02-20T05%3A42%3A21Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-02-19T19%3A35%3A44Z&ske=2023-02-20T19%3A35%3A44Z&sks=b&skv=2021-08-06&sig=4aux/nuKwJnZD7ZhohWdt%2B5KmSwudKSbzni6IWQZ4QE%3D')
     const [userQA, setUserQA] = useState([])
-    const showAnswer = useRef()
-    function Get_Note() {
-        return marked(testData)
+    const input_QA = useRef()
+    const input_Img = useRef()
+
+    // 复制内容
+    function copyCot(cot) {
+        copy(cot);
+        // Toast.info('复制成功', 2, '', false); // 不需要提示 可注释
     }
 
     useEffect(() => {
         (async () => {
             try {
-                // let cur_answer = await api.getAnSwer(userInput);
-                // showAnswer.current.innerHTML = cur_answer
-                hljs.highlightAll() // 高亮代码块
-                // userQA.push({ userInput, cur_answer })
-                // setNovelsList([...userQA]);
+
             } catch (_) {
             }
         })();
@@ -50,6 +55,7 @@ export default function ChatGpt() {
                                 <>
                                     {
                                         userQA.map((item, index) => {
+                                            let nowText = item.text.charAt(0) === '机' ? item.text.slice(4) : item.text.charAt(0) === 'R' ? item.text.slice(6) : item.text.charAt(0) === 'B' ? item.text.slice(4) : item.text
                                             return (
                                                 <div key={index}>
                                                     <div className="problem">
@@ -60,11 +66,27 @@ export default function ChatGpt() {
                                                     </div>
                                                     {/* 答 */}
                                                     <div className='answer'>
+
                                                         <span className='icon-A'>
                                                             <Image lazy src='/404' width={30} height={30} />
                                                         </span>
-                                                        <p className='show-A' ref={showAnswer}>
-                                                            {item.text}
+                                                        <p className='show-A'>
+
+
+
+                                                            <span className='copy' onClick={() => copyCot(nowText)}>
+                                                                <Popover
+                                                                    content='复制成功'
+                                                                    trigger='click'
+                                                                    placement='right'
+                                                                    defaultVisible={false}
+                                                                >
+                                                                    <FileOutline fontSize={20} color='var(--adm-color-weak)' />
+                                                                </Popover>
+                                                            </span>
+                                                            <Highlight>
+                                                                {nowText}
+                                                            </Highlight>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -78,7 +100,11 @@ export default function ChatGpt() {
                     {/* 输入问题框 */}
                     <div className='inputQ'>
                         <Input
+                            ref={input_QA}
                             placeholder='请输入内容'
+                            onChange={
+                                val => { SetUserInput(val) }
+                            }
                             onEnterPress={val => {
                                 let { value } = val.target
                                 if (!value.endsWith('?')) {
@@ -92,8 +118,7 @@ export default function ChatGpt() {
                                     })
                                 }
                                 nowQ = nowQ + 'Human:' + value
-                                console.log(nowQ);
-                                val.target.value = ''
+                                input_QA.current.clear()
                                 let curAnswer = api.getAnSwer(nowQ);
                                 curAnswer.then((d) => {
                                     console.log(d);
@@ -112,16 +137,74 @@ export default function ChatGpt() {
                             className='input-section'
                         >
                         </Input>
-                        <span><PlayOutline fontSize={24} /></span>
+                        <span onClick={() => {
+                            let value = userInput
+                            if (!value.endsWith('?')) {
+                                value += '?'
+                            }
+                            //循环获取 当前问题，回答，拼接
+                            let nowQ = ''
+                            if (userQA.length > 0) {
+                                userQA.map((item) => {
+                                    nowQ += item.value + item.text + '\n'
+                                })
+                            }
+                            nowQ = nowQ + 'Human:' + value
+                            console.log(nowQ);
+                            input_QA.current.clear()
+                            console.log(input_QA);
+                            let curAnswer = api.getAnSwer(nowQ);
+                            curAnswer.then((d) => {
+                                console.log(d);
+                                let { data } = d
+                                let { text } = data
+                                let qaObj = { value, text }
+                                userQA.push(qaObj)
+                                setUserQA([...userQA])
+                            })
+                        }}><PlayOutline fontSize={24} /></span>
                     </div>
 
                 </CapsuleTabs.Tab>
                 <CapsuleTabs.Tab title='图片' key='gpt-Image'>
                     {/* 图片模块 */}
-
+                    <div className="problem">
+                        <span className='icon-Q'><QuestionCircleOutline fontSize={20} /></span>
+                        <p className='show-Q'>
+                            {imgInput}
+                        </p>
+                    </div>
+                    <div className='showImg'>
+                        <Image lazy src={imgUrl} />
+                    </div>
+                    {/* 输入问题框 */}
+                    <div className='inputQ'>
+                        <Input
+                            placeholder='请输入想获取的图片的描述'
+                            onEnterPress={val => {
+                                let { value } = val.target
+                                SetImgInput(value)
+                                let curImage = api.getImage(value);
+                                curImage.then((d) => {
+                                    console.log(d);
+                                    let { data } = d
+                                    let { url } = data
+                                    SetImgUrl(url)
+                                })
+                            }}
+                            style={{
+                                '--text-align': 'left',
+                                '--font-size': '15px',
+                                '--placeholder-color': '#a3a5a9'
+                            }}
+                            className='input-section'
+                        >
+                        </Input>
+                        <span><PlayOutline fontSize={24} /></span>
+                    </div>
                 </CapsuleTabs.Tab>
 
             </CapsuleTabs>
-        </div>
+        </div >
     )
 }
