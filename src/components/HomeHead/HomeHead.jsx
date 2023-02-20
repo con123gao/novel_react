@@ -1,7 +1,17 @@
 import React, { useMemo } from 'react'
+import { Link } from 'react-router-dom'
+
+import { NavBar, TabBar } from 'antd-mobile'
+
 import defaultImg from '../../assets/images/default.png';
 import './HomeHead.less'
 
+import {
+    AppOutline,
+    MessageOutline,
+    UnorderedListOutline,
+    UserOutline,
+} from 'antd-mobile-icons'
 /**
  * 首页的头部部分
  * @returns 
@@ -9,13 +19,35 @@ import './HomeHead.less'
 export default function HomeHead(props) {
     let { today } = props;
     let time = useMemo(() => {
-        let [, month, day] = (''+today).match(/^\d{4}(\d{2})(\d{2})$/),
-        area = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
+        let [, month, day] = ('' + today).match(/^\d{4}(\d{2})(\d{2})$/),
+            area = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
         return {
-            month: area[+month]+'月',
+            month: area[+month] + '月',
             day
         }
     }, [today])
+    const tabs = [
+        {
+            key: '/home',
+            title: '首页',
+            icon: <AppOutline />,
+        },
+        {
+            key: '/todo',
+            title: '待办',
+            icon: <UnorderedListOutline />,
+        },
+        {
+            key: '/message',
+            title: '消息',
+            icon: <MessageOutline />,
+        },
+        {
+            key: '/me',
+            title: '我的',
+            icon: <UserOutline />,
+        },
+    ]
 
 
     return <header className='home-head-box'>
@@ -25,12 +57,29 @@ export default function HomeHead(props) {
                 <span>{time.day}</span>
                 <span>{time.month}</span>
             </div>
-            <h2 className='title'>小说网站</h2>
+            <Link
+                to={{ pathname: `/` }}
+                className='header-route'
+            >
+                首页
+            </Link>
+            <Link
+                to={{ pathname: `/chatgpt` }}
+                className='header-route'
+            >
+                AI学习
+            </Link>
+            <Link
+                to={{ pathname: `/store` }}
+                className='header-route'
+            >
+                收藏夹
+            </Link>
         </div>
         {/* 头像区域 */}
         <div className='picture'>
             {/* 打包后 静态资源img相对地址找不到，所以我们需要在css样式中使用相对地址 */}
             <img src={defaultImg} alt="" />
         </div>
-    </header>
+    </header >
 }
