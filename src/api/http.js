@@ -21,6 +21,7 @@ const http = function http(config) {
   if (config.params !== null && !_.isPlainObject(config.params)) config.params = null;
 
   let { url, method, credentials, headers, body, params, responseType, signal } = config;
+  if(method==='get'||method==='GET'){
   if (params) {
     url += `${url.includes('?') ? '&' : '?'}${qs.stringify(params)}`;
   }
@@ -28,6 +29,8 @@ const http = function http(config) {
     body = qs.stringify(body);
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
   }
+  }
+
 
   // 处理Token
   let token = _.storage.get('tk'),
