@@ -31,14 +31,20 @@ const http = function http(config) {
 
   // 处理Token
   let token = _.storage.get('tk'),
-    safeList = ['/user_info', '/user_update', '/store', '/store_remove', '/store_list'];
+    /**
+     * 哪些接口需要 token
+     * /user/getUserInfo ：获取登录用户信息
+     * /front/logout：退出登录
+     * /user/updateUserInfo： 修改个人信息
+     */
+    safeList = ['/user/getUserInfo', '/front/logout', '/user/updateUserInfo', '/store_remove', '/store_list'];
   if (token) {
     let reg = /\/api(\/[^?#]+)/,
       [, $1] = reg.exec(url) || [];
     let isSafe = safeList.some(item => {
       return $1 === item;
     });
-    if (isSafe) headers['authorization'] = token;
+    if (isSafe) headers['token'] = token;
   }
 
   // send
@@ -50,9 +56,15 @@ const http = function http(config) {
     cache: 'no-cache',
     signal
   };
-  if (/^(POST|PUT|PATCH)$/i.test(method) && body) config.body = body;
+  if (/^(POST|PUT|PATCH)$/i.test(method) && body) {
+    headers['Content-Type'] = 'application/json';
+    console.log(body);
+    config.body = JSON.stringify(body);
+  }
   return fetch(url, config)
     .then(response => {
+      console.log(url);
+      console.log(config);
       let { status, statusText } = response;
       if (/^(2|3)\d{2}$/.test(status)) {
         let result;
@@ -96,6 +108,7 @@ const http = function http(config) {
   };
 });
 ["POST", "PUT", "PATCH"].forEach(item => {
+  console.log("进来了")
   http[item.toLowerCase()] = function (url, body, config) {
     if (!_.isPlainObject(config)) config = {};
     config['url'] = url;

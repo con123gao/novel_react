@@ -67,6 +67,45 @@ const getImage = (input)=>{
     })
 }
 
+/**
+ * 验证码模块
+ */
+//邮箱验证码
+const sendEmail = (email)=>{
+    return http.get('/api/email/sendEmail',{
+        params: {
+            email
+        }
+    })
+}
+
+/**
+ * 用户相关
+ */
+//登录
+const login = (userName,password)=>{
+        return http.post('/api/front/login',{
+        userName,
+        password
+    })
+}
+
+//注册
+const register = ()=>{
+    return http.post('/api/user/register',{
+        email,
+        userName,
+        password,
+        code
+    })
+}
+//获取用户信息
+const getUserInfo = (email)=>{
+    return http.get('/api/user/getUserInfo')
+}
+
+
+
 
 // 暴露API
 const api = {
@@ -76,7 +115,12 @@ const api = {
     getNovelDetail,
     getChapterPageListById,
     getAnSwer,
-    getImage
+    getImage,
+    sendEmail,
+    login,
+    register,
+    getUserInfo,
+    
 }
 
 export default api;

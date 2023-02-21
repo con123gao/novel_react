@@ -26,28 +26,6 @@ export default function HomeHead(props) {
             day
         }
     }, [today])
-    const tabs = [
-        {
-            key: '/home',
-            title: '首页',
-            icon: <AppOutline />,
-        },
-        {
-            key: '/todo',
-            title: '待办',
-            icon: <UnorderedListOutline />,
-        },
-        {
-            key: '/message',
-            title: '消息',
-            icon: <MessageOutline />,
-        },
-        {
-            key: '/me',
-            title: '我的',
-            icon: <UserOutline />,
-        },
-    ]
 
 
     return <header className='home-head-box'>
@@ -61,7 +39,7 @@ export default function HomeHead(props) {
                 to={{ pathname: `/` }}
                 className='header-route'
             >
-                首页
+                小说
             </Link>
             <Link
                 to={{ pathname: `/chatgpt` }}
@@ -75,11 +53,21 @@ export default function HomeHead(props) {
             >
                 收藏夹
             </Link>
+            <Link
+                to={{ pathname: `/store` }}
+                className='header-route'
+            >
+                留言
+            </Link>
         </div>
         {/* 头像区域 */}
         <div className='picture'>
-            {/* 打包后 静态资源img相对地址找不到，所以我们需要在css样式中使用相对地址 */}
-            <img src={defaultImg} alt="" />
+            <Link
+                to={{ pathname: `/login` }}
+            >
+                {/* 打包后 静态资源img相对地址找不到，所以我们需要在css样式中使用相对地址 */}
+                <img src={defaultImg} alt="" />
+            </Link>
         </div>
     </header >
 }

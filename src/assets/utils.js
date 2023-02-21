@@ -210,9 +210,9 @@ const storage = {
             value
         }));
     },
-    get(key, cycle = 2592000000) {
+    get(key, cycle = 862400000) {
         cycle = +cycle;
-        if (isNaN(cycle)) cycle = 2592000000;
+        if (isNaN(cycle)) cycle = 862400000;
         let data = localStorage.getItem(key);
         if (!data) return null;
         let { time, value } = JSON.parse(data);

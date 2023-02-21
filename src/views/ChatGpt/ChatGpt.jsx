@@ -29,7 +29,10 @@ export default function ChatGpt() {
     // 复制内容
     function copyCot(cot) {
         copy(cot);
-        // Toast.info('复制成功', 2, '', false); // 不需要提示 可注释
+        Toast.show({
+            icon: 'success',
+            content: '复制成功'
+        })
     }
 
     useEffect(() => {

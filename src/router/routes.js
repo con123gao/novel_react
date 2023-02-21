@@ -58,7 +58,15 @@ const routes = [{
         name: 'login',
         component: lazy(() => import('../views/Login/Login')),
         meta: {
-            title: '登录/注册'
+            title: '登录'
+        }
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: lazy(() => import('../views/Register/Register')),
+        meta: {
+            title: '注册'
         }
     },
     {
