@@ -29,9 +29,7 @@ const Login = function Login(props) {
         try {
             await formIns.validateFields();
             let { userName, password } = formIns.getFieldValue();
-            console.log(userName);
-            console.log(password);
-            let { code, msg, data } = await api.login(userName, password)
+            let { code: codeHttp, msg, data } = await api.login(userName, password)
             let { token, userInfo } = data
             // let {} = userInfo
             if (+codeHttp !== 200) {
@@ -39,21 +37,23 @@ const Login = function Login(props) {
                     icon: 'fail',
                     content: msg
                 });
-                // 重置code
-                formIns.resetFields(['code']);
                 return;
+            } else {
+                Toast.show({
+                    icon: 'success',
+                    content: msg
+                })
             }
             //登录成功：存储到Token，存储登陆者信息到redux，提示，跳转
             //存储token
             _.storage.set('tk', token)
             //有些接口传递的时候必须要基于 请求头传递token ：authorization: token
             await queryUserInfoAsync();//派发任务，同步redux中的状态信息
-            //提示和跳转
-            Toast.show({
-                icon: 'success',
-                content: msg
-            })
-            navigate(['/']);
+            // 跳转
+            let to = usp.get('to');
+            let register = usp.get('register')
+            to ? navigate(to, { replace: true }) : register ? navigate(-2) : navigate(-1);
+
         } catch (_) {
 
         }

@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import { NavBar, TabBar } from 'antd-mobile'
 
 import defaultImg from '../../assets/images/default.png';
-import './HomeHead.less'
+import './HomeHead.less';
+import { connect } from 'react-redux';
+import action from '../../store/action';
 
 import {
     AppOutline,
@@ -16,8 +18,8 @@ import {
  * 首页的头部部分
  * @returns 
  */
-export default function HomeHead(props) {
-    let { today } = props;
+const HomeHead = function HomeHead(props) {
+    let { today, info, queryUserInfoAsync } = props;
     let time = useMemo(() => {
         let [, month, day] = ('' + today).match(/^\d{4}(\d{2})(\d{2})$/),
             area = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
@@ -25,7 +27,13 @@ export default function HomeHead(props) {
             month: area[+month] + '月',
             day
         }
-    }, [today])
+    }, [today]);
+    //第一次渲染完，如果info没有信息，我们派发一次，获取登录者信息
+    useEffect(() => {
+        if (!info) {
+            queryUserInfoAsync();
+        }
+    }, []);
 
 
     return <header className='home-head-box'>
@@ -63,11 +71,19 @@ export default function HomeHead(props) {
         {/* 头像区域 */}
         <div className='picture'>
             <Link
-                to={{ pathname: `/login` }}
+                to={{
+                    pathname: info ? '/personal' : `/login`
+                }}
             >
                 {/* 打包后 静态资源img相对地址找不到，所以我们需要在css样式中使用相对地址 */}
-                <img src={defaultImg} alt="" />
+                {console.log(info)}
+                <img src={info ? info.avatar ? info.avatar : defaultImg : defaultImg} alt="" />
             </Link>
         </div>
     </header >
 }
+
+export default connect(
+    state => state.base,
+    action.base
+)(HomeHead);

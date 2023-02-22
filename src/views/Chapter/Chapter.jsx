@@ -118,6 +118,7 @@ export default function Chapter(props) {
               chapterList.map(item => {
                 return <Link
                   to={{ pathname: `/show/${item.novelId}/${item.chapterId}/${item.chapterName}` }}
+                  state={chapterList}
                   key={item.chapterId}
                   className='chapter-list'
                 >

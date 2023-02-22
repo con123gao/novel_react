@@ -91,7 +91,7 @@ const login = (userName,password)=>{
 }
 
 //注册
-const register = ()=>{
+const register = (email, userName, password, code)=>{
     return http.post('/api/user/register',{
         email,
         userName,

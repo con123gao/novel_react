@@ -7,7 +7,8 @@ import { EyeInvisibleOutline, EyeOutline } from 'antd-mobile-icons'
 import _ from '../../assets/utils';
 import ButtonAgain from '../../components/ButtonAgain/ButtonAgain';
 
-export default function Register() {
+export default function Register(props) {
+  let {  navigate, usp } = props;
   // 按钮是否禁用
   const [disabled, setDisabled] = useState(false),
     [sendText, setSendText] = useState('发送验证码');
@@ -53,6 +54,7 @@ export default function Register() {
     try {
       await formIns.validateFields();
       let { email, userName, password, code } = formIns.getFieldValue();
+      console.log(email);
       // 上下两个code重名，用 重命名的方法
       let { code: codeHttp, msg } = await api.register(email, userName, password, code)
       if (+codeHttp !== 200) {
@@ -70,8 +72,7 @@ export default function Register() {
         });
       }
       //跳转到登录
-
-
+      navigate('/login?register=1',{replace: true});
     } catch (_) {
 
     }

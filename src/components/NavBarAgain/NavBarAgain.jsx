@@ -24,7 +24,7 @@ export default function NavBarAgain(props) {
     const handleBack = () => {
         // 特殊:登录页 & to的值是/deatil/xxx
         let to = usp.get('to');
-        if (location.pathname === '/login' && /^\/detail\/\d+$/.test(to)) {
+        if (location.pathname === '/login' && /^\/show\/\d+$/.test(to)) {
             navigate(to, { replace: true });
             return;
         }

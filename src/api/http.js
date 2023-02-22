@@ -61,13 +61,10 @@ const http = function http(config) {
   };
   if (/^(POST|PUT|PATCH)$/i.test(method) && body) {
     headers['Content-Type'] = 'application/json';
-    console.log(body);
     config.body = JSON.stringify(body);
   }
   return fetch(url, config)
     .then(response => {
-      console.log(url);
-      console.log(config);
       let { status, statusText } = response;
       if (/^(2|3)\d{2}$/.test(status)) {
         let result;
@@ -111,7 +108,6 @@ const http = function http(config) {
   };
 });
 ["POST", "PUT", "PATCH"].forEach(item => {
-  console.log("进来了")
   http[item.toLowerCase()] = function (url, body, config) {
     if (!_.isPlainObject(config)) config = {};
     config['url'] = url;
