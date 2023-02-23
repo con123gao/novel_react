@@ -1,16 +1,18 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Badge, Toast } from 'antd-mobile'
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { LeftOutline, RightOutline, FileOutline, MoreOutline, StarOutline } from 'antd-mobile-icons'
 import { connect } from 'react-redux'
 import action from '../../store/action'
 import './Show.less'
+import _ from '../../assets/utils'
+import api from '../../api'
 
 const Show = function Show(props) {
   const { navigate } = props
-  const { novelId, chapterId, chapterName } = props.params
-  const { state } = useLocation();
-  console.log(state);
+  const { novelId, chapterId, chapterCount } = props.params
+  const [chapterName, setChapterName] = useState()
+  const [isCollect, setIsCollect] = useState(false)
 
   const base_pre = "http://localhost:8080/book/"
 
@@ -18,9 +20,19 @@ const Show = function Show(props) {
   let { base: { info: userInfo, location }, queryUserInfoAsync } = props
   useEffect(() => {
     //第一次渲染完。，如果userInfo不存在，我们派发任务同步登陆者信息
-    if (!userInfo) queryUserInfoAsync();
 
-  }, []);
+    if (!userInfo) queryUserInfoAsync();
+    //查展示的具体信息
+    (async () => {
+      try {
+        let { data: { isCollect, chapterName }, code } = await api.getShowInfo(novelId, chapterId);
+        setChapterName(chapterName);
+        setIsCollect(isCollect)
+      } catch (_) {
+
+      }
+    })();
+  }, [chapterId]);
 
   // 点击收藏按钮
   const handleStore = () => {
@@ -35,7 +47,27 @@ const Show = function Show(props) {
       return;
     }
     //TODO 收藏
+    (async () => {
+      try {
+        let { msg, code } = await api.collectNovel(+novelId);
+        if (+code === 200) {
+          Toast.show({
+            icon: 'success',
+            content: msg
+          });
+          let { data: { isCollect, chapterName }, code } = await api.getShowInfo(novelId, chapterId);
+          setChapterName(chapterName);
+          setIsCollect(isCollect)
+        } else {
+          Toast.show({
+            icon: 'fail',
+            content: msg
+          });
+        }
+      } catch (_) {
 
+      }
+    })();
   };
 
   return (
@@ -56,9 +88,29 @@ const Show = function Show(props) {
           }}
         ><FileOutline /></div>
         <div className="icons">
-          <span content="128"><LeftOutline /></span>
-          <span className='stored' onClick={handleStore}><StarOutline /></span>
-          <span><RightOutline /></span>
+          <span content="128">
+            {+chapterId >= 2 ?
+              <Link to={{
+                pathname: `/show/${novelId}/${parseInt(chapterId) - 1}/${chapterCount}`
+              }}>
+                <LeftOutline /> 上一章
+              </Link>
+              :
+              <><LeftOutline /> 已经是第一章</>
+            }
+          </span>
+          <span className={isCollect?'stored':''} onClick={handleStore} ><StarOutline /></span>
+          <span>
+            {console.log(+chapterCount, +chapterId)}
+            {+chapterCount - +chapterId > 0 ?
+              <Link to={{
+                pathname: `/show/${novelId}/${parseInt(chapterId) + 1}/${chapterCount}`
+              }}>
+                下一章 <RightOutline />
+              </Link> :
+              <>已经是最后一章 <RightOutline /></>
+            }
+          </span>
         </div>
       </div>
 

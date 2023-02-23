@@ -2,27 +2,27 @@ import {
     lazy
 } from 'react'
 import Home from '../views/Home/Home'
+import { withKeepAlive } from 'keepalive-react-component'
 
-const routes = [{
-        path: '/',
-        name: 'home',
-        component: Home,
-        meta: {
-            title: '首页'
-        }
-    },
+const routes = [
     {
         // 表示下面必须要传入id
         path: '/chapter/:id',
         name: 'chapter',
         // 懒加载
-        component: lazy(() => import('../views/Chapter/Chapter')),
+        //缓存
+        component: withKeepAlive(
+            lazy(() => import('../views/Chapter/Chapter')),
+            {
+                cacheId: 'chapter',
+                scroll: true
+            }),
         meta: {
             title: '章节'
         }
     },
     {
-        path: '/show/:novelId/:chapterId/:chapterName',
+        path: '/show/:novelId/:chapterId/:chapterCount',
         name: 'show',
         component: lazy(() => import('../views/Show/Show')),
         meta: {
@@ -78,13 +78,25 @@ const routes = [{
         }
     },
     {
+        path: '/',
+        name: 'home',
+        //缓存
+        component: withKeepAlive(Home, {
+            cacheId: 'home',
+            scroll: true
+        }),
+        meta: {
+            title: '首页'
+        }
+    },
+    {
         path: '*',
         name: '404',
         component: lazy(() => import('../views/Page404/Page404')),
         meta: {
             title: '访问资源不存在'
         }
-    }
+    },
 ];
 
 export default routes;

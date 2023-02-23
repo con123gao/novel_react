@@ -8,6 +8,22 @@ import './Chapter.less'
 import _ from '../../assets/utils'
 import api from '../../api'
 // 章节页面
+/**
+ * 需要组件缓存 A->B
+ * 主流思想：
+ * 1.数据缓存，不是标准的组件缓存
+    * 1.在a进行跳转的时候，将 A组件中需要的数据或者a中的虚拟dom存储到redux中。a组件释放，b加载
+    * 2.当从b回到a的时候，A开始加载渲染
+    *  2.1 首先判断redux中是否存储了数据或者虚拟dom，没存储就是第一个加载，存储了就先读取存储的 数据/dom 渲染
+ *
+ * 2.修改路由跳转机制，跳转的时候，指定的路由不销毁，只是控制 display:none，
+ *    后期从b回到a的时候，直接让display：block
+ * 
+ * (推荐)3.缓存真实DOM，把A组件的真实DOM等信息直接缓存起来，从b-a的时候，直接把a缓存的信息拿出来用
+ *  
+ * @param {*} props 
+ * @returns 
+ */
 export default function Chapter(props) {
 
   // 监听 加载更多
@@ -117,8 +133,7 @@ export default function Chapter(props) {
             {
               chapterList.map(item => {
                 return <Link
-                  to={{ pathname: `/show/${item.novelId}/${item.chapterId}/${item.chapterName}` }}
-                  state={chapterList}
+                  to={{ pathname: `/show/${item.novelId}/${item.chapterId}/${chapterCount}` }}
                   key={item.chapterId}
                   className='chapter-list'
                 >

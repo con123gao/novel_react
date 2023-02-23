@@ -13,10 +13,12 @@ import _ from '../../assets/utils'
 import api from '../../api'
 import './ChatGpt.less'
 import SkeletonAgain from '../../components/SkeletonAgain/SkeletonAgain'
+import { connect } from 'react-redux';
+import action from '../../store/action';
 
-export default function ChatGpt() {
+const ChatGpt = function ChatGpt(props) {
     let testData = "```typescript\n// markdown样式\nimport {marked} from 'marked' // 导入markdown转换器\nimport hljs from 'highlight.js' // 导入markdown代码块高亮包\n```"
-    // let testData = "你好啊"
+    let { info, queryUserInfoAsync } = props;
 
     // 用户 问答列表
     const [userInput, SetUserInput] = useState('')
@@ -36,6 +38,9 @@ export default function ChatGpt() {
     }
 
     useEffect(() => {
+        if (!info) {
+            queryUserInfoAsync();
+        }
         (async () => {
             try {
 
@@ -69,9 +74,8 @@ export default function ChatGpt() {
                                                     </div>
                                                     {/* 答 */}
                                                     <div className='answer'>
-
                                                         <span className='icon-A'>
-                                                            <Image lazy src='/404' width={30} height={30} />
+                                                            <Image lazy src={info ? info.avatar : '/404'} width={30} height={30} />
                                                         </span>
                                                         <p className='show-A'>
 
@@ -211,3 +215,7 @@ export default function ChatGpt() {
         </div >
     )
 }
+export default connect(
+    state => state.base,
+    action.base
+)(ChatGpt);

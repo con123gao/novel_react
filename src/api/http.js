@@ -30,6 +30,9 @@ const http = function http(config) {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
   }
   }
+  if(method==='put'||method==='PUT'){
+    headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+  }
 
 
   // 处理Token
@@ -42,6 +45,7 @@ const http = function http(config) {
      */
     safeList = ['/user/getUserInfo', '/front/logout', '/user/updateUserInfo', '/store_remove', '/store_list'];
   if (token) {
+    headers['token'] = token;
     let reg = /\/api(\/[^?#]+)/,
       [, $1] = reg.exec(url) || [];
     let isSafe = safeList.some(item => {
@@ -61,6 +65,9 @@ const http = function http(config) {
   };
   if (/^(POST|PUT|PATCH)$/i.test(method) && body) {
     headers['Content-Type'] = 'application/json';
+    if(method==='put'||method==='PUT'){
+      headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+    }
     config.body = JSON.stringify(body);
   }
   return fetch(url, config)

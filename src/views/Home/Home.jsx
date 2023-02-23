@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Swiper, Divider, DotLoading, SearchBar,PickerView } from 'antd-mobile'
+import { Swiper, Divider, DotLoading, SearchBar, PickerView, Dropdown, Radio, Space } from 'antd-mobile'
 
 import HomeHead from '../../components/HomeHead/HomeHead'
 import NovelsItem from '../../components/NovelsItem/NovelsItem'
@@ -13,6 +13,10 @@ import './Home.less'
 import { SoundMuteFill } from 'antd-mobile-icons'
 
 // 首页
+/**
+ * 需要组件缓存
+ * @returns 
+ */
 export default function Home() {
 
   // 监听 加载更多
@@ -28,18 +32,25 @@ export default function Home() {
   const [pageSize, setPageSize] = useState(3)
   // 当前大小
   const [novelCount, setNovelCount] = useState(0)
+  // 所有分类
+  const [categoryList, setCategoryList] = useState([{
+    id: 0,
+    name: '全部小说',
+    pid: -1,
+    delFlag: 0
+  }])
 
   //服务器拿到 广告列表
   const [bannerData, setBannerData] = useState([])
   // 小说列表，分页
   const [novelsList, setNovelsList] = useState([])
 
-  const testData =  [
+  const testData = [
     [
       { label: '周一' },
       { label: '周二' },
-      { label: '周三'},
-      { label: '周四'},
+      { label: '周三' },
+      { label: '周四' },
       { label: '周五' },
     ],
     // [
@@ -55,6 +66,9 @@ export default function Home() {
         let bannerList = await api.queryBanner();
         setBannerData(bannerList.data);
         let NovelList = await api.queryNovelPage(pageNum, pageSize, categoryId);
+        let { data: cateData } = await api.getAllCategory();
+        setCategoryList([...cateData])
+        console.log(categoryList);
         let data = NovelList.data.rows
         setNovelCount(NovelList.data.total)
         setNovelsList([...data]);
@@ -98,6 +112,17 @@ export default function Home() {
     }
   }, [novelsList, novelCount])
 
+  useEffect(()=>{
+    (async () => {
+      try {
+        let NovelList = await api.queryNovelPage(pageNum, pageSize, categoryId);
+        let data = NovelList.data.rows
+        setNovelCount(NovelList.data.total)
+        setNovelsList([...data]);
+      } catch (_) {
+      }
+    })();
+  },[categoryId])
 
 
 
@@ -142,13 +167,60 @@ export default function Home() {
           </Swiper>
           : null}
       </div>
-      
+
 
       {/* 小说列表 */}
       {/* 分割线 */}
       <Divider contentPosition='left'> xxx小说网</Divider>
       {/* 分类 */}
-      {/* <PickerView columns={testData} /> */}
+      <Dropdown closeOnClickAway>
+        <Dropdown.Item key='sorter' title='小说分类'>
+          <div style={{ padding: 20, width: '50%', }}>
+            <Radio.Group defaultValue='-1'>
+              <Space direction='vertical' block>
+                <Radio block value='-1'
+                  onChange={
+                    () => {
+                      setCategoryId(-1)
+                      setPageNum(1)
+                      setNovelsList([])
+                    }
+                  }
+                  style={{
+                    '--icon-size': '22px',
+                    '--font-size': '16px',
+                    '--gap': '8px',
+                    'float': 'right'
+                  }}
+                >
+                  全部小说
+                </Radio>
+                {
+                  categoryList.map(item => {
+                    return <Radio block value={item.id} key={item.id}
+                      onChange={
+                        () => {
+                          setCategoryId(item.id)
+                          setPageNum(1)
+                          setNovelsList([])
+                        }
+                      }
+                      style={{
+                        '--icon-size': '22px',
+                        '--font-size': '16px',
+                        '--gap': '8px',
+                        'float': 'right'
+                      }}
+                    >
+                      {item.name}
+                    </Radio>
+                  })
+                }
+              </Space>
+            </Radio.Group>
+          </div>
+        </Dropdown.Item>
+      </Dropdown>
       {
         novelsList.length === 0 ?
           //  没有数据展示骨架屏 
