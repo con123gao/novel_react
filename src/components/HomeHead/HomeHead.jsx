@@ -62,7 +62,7 @@ const HomeHead = function HomeHead(props) {
                 收藏夹
             </Link>
             <Link
-                to={{ pathname: `/store` }}
+                to={{ pathname: `/advice` }}
                 className='header-route'
             >
                 留言

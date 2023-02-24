@@ -30,6 +30,14 @@ const routes = [
         }
     },
     {
+        path: '/advice',
+        name: 'advice',
+        component: lazy(() => import('../views/Advise/Advice')),
+        meta: {
+            title: '用户建议'
+        }
+    },
+    {
         path: '/personal',
         name: 'personal',
         component: lazy(() => import('../views/Personal/Personal')),

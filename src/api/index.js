@@ -130,13 +130,33 @@ const collectNovel = (novelId) => {
 const collectNovelList = () => {
     return http.get('/api/collectList')
 }
-//上传头像
+//上传头像 「要求FormData格式」
 const upload = (file) => {
-    return http.put('/api/upload',{
+    return http.put('/api/upload', {
         file
     })
 }
 
+// 修改个人信息
+const userUpdate = (username, pic) => {
+    return http.post('/api/user_update', {
+        username,
+        pic
+    });
+};
+
+//用户提出建议
+const writeAdvice = (input) => {
+    return http.get('/api/writeAdvice', {
+        params: {
+            input
+        }
+    })
+}
+// 建议列表
+const getAdviceList = () => {
+    return http.get('/api/adviceList')
+}
 
 // 暴露API
 const api = {
@@ -155,7 +175,9 @@ const api = {
     getUserInfo,
     collectNovel,
     collectNovelList,
-    upload
+    upload,
+    writeAdvice,
+    getAdviceList,
 
 }
 

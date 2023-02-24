@@ -6,6 +6,7 @@ import { ImageUploader, Input, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import action from '../../store/action';
 import api from '../../api';
+import axios from "axios";
 
 /* 样式 */
 const UpdateBox = styled.div`
@@ -39,14 +40,25 @@ const UpdateBox = styled.div`
     }
 `;
 
+
 const Update = function Update(props) {
   let { info, queryUserInfoAsync, navigate } = props;
   /* 定义状态 */
   let [pic, setPic] = useState([{ url: info.avatar }]),
     [userName, setUserName] = useState(info.userName);
-
+  const options = {
+    method: 'PUT',
+    url: '/api/upload',
+    headers: {
+      'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+      token: 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5YzJiZGNjMzU3MDc0ZWI0Yjc1NzBmYjVmMGM0MjRmMyIsInN1YiI6IjIxIiwiaXNzIjoic2pnIiwiaWF0IjoxNjc3MjI4NjIzLCJleHAiOjE2NzczMTUwMjN9.ASmNqhvBaH9nJmcTTmb2oAyi7t_qAttOHeajieO-aH8',
+      'content-type': 'multipart/form-data'
+    },
+    data: '[form]'
+  };
   /* 图片上传 */
   const limitImage = (file) => {
+
     let limit = 1024 * 1024;
     if (file.size > limit) {
       Toast.show({
@@ -58,10 +70,13 @@ const Update = function Update(props) {
     return file;
   };
   const uploadImage = async (file) => {
+    let fm = new FormData();
+    fm.append('file', URL.createObjectURL(file));
+
     let temp;
     try {
-      let { code, data: pic } = await api.upload(file);
-      if (+code !== 0) {
+      let { code, data: pic } = await api.upload(fm);
+      if (+code !== 200) {
         Toast.show({
           icon: 'fail',
           content: '上传失败'
@@ -75,6 +90,7 @@ const Update = function Update(props) {
     } catch (_) { }
     return { url: temp };
   };
+  
 
   /* 提交信息 */
   const submit = async () => {
@@ -113,8 +129,10 @@ const Update = function Update(props) {
     } catch (_) { }
   };
 
+
   return <UpdateBox>
     {/* <img src=12e218e20b2d45ce8f810e59e43d3c14"></img> */}
+    {/* <input type="file" id="oFile" name="myFiles" multiple onchange={e=>upFile(e)}/> */}
     <NavBarAgain title="修改信息" />
     <div className="formBox">
       <div className="item">
@@ -126,8 +144,9 @@ const Update = function Update(props) {
             onDelete={() => {
               setPic([]);
             }}
+            action={uploadImage}
             beforeUpload={limitImage}
-            upload={uploadImage}
+            // upload={uploadImage}
           />
         </div>
       </div>

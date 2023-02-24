@@ -31,7 +31,7 @@ const http = function http(config) {
   }
   }
   if(method==='put'||method==='PUT'){
-    headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+    headers['Content-Type'] = 'multipart/form-data';
   }
 
 
@@ -43,7 +43,7 @@ const http = function http(config) {
      * /front/logout：退出登录
      * /user/updateUserInfo： 修改个人信息
      */
-    safeList = ['/user/getUserInfo', '/front/logout', '/user/updateUserInfo', '/store_remove', '/store_list'];
+    safeList = ['/user/getUserInfo', '/front/logout',];
   if (token) {
     headers['token'] = token;
     let reg = /\/api(\/[^?#]+)/,

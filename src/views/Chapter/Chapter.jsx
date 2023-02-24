@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import SkeletonAgain from '../../components/SkeletonAgain/SkeletonAgain'
 import { Swiper, Divider, DotLoading, Ellipsis, Image } from 'antd-mobile'
+import NavBarAgain from '../../components/NavBarAgain/NavBarAgain'
 import { TeamOutline } from 'antd-mobile-icons'
 
 import './Chapter.less'
@@ -93,6 +94,7 @@ export default function Chapter(props) {
 
   return (
     <div className='chapter-box'>
+      <NavBarAgain title="章节列表" />
       {/* 头部 */}
       <section className="chapter-header"></section>
       {/* 具体信息 */}

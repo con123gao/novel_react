@@ -128,7 +128,6 @@ const ChatGpt = function ChatGpt(props) {
                                 input_QA.current.clear()
                                 let curAnswer = api.getAnSwer(nowQ);
                                 curAnswer.then((d) => {
-                                    console.log(d);
                                     let { data } = d
                                     let { text } = data
                                     let qaObj = { value, text }

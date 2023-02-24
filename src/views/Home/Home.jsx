@@ -112,7 +112,7 @@ export default function Home() {
     }
   }, [novelsList, novelCount])
 
-  useEffect(()=>{
+  useEffect(() => {
     (async () => {
       try {
         let NovelList = await api.queryNovelPage(pageNum, pageSize, categoryId);
@@ -122,7 +122,7 @@ export default function Home() {
       } catch (_) {
       }
     })();
-  },[categoryId])
+  }, [categoryId])
 
 
 
@@ -146,7 +146,7 @@ export default function Home() {
       </div>
       {/* 轮播图 */}
       <div className='swiper-box'>
-        {bannerData.length > 0 ?
+        {bannerData ? bannerData.length > 0 ?
           <Swiper autoplay={true} loop={true}>
             {
               bannerData.map((item, index) => {
@@ -165,7 +165,7 @@ export default function Home() {
               })
             }
           </Swiper>
-          : null}
+          : null : null}
       </div>
 
 
