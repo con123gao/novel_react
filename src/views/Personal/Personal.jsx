@@ -70,6 +70,10 @@ const Personal = function Personal(props) {
                 我的收藏
                 <RightOutline />
             </Link>
+            <Link to='/history' className="tab">
+                历史记录
+                <RightOutline />
+            </Link>
             <div className="tab" onClick={signout}>
                 退出登录
                 <RightOutline />

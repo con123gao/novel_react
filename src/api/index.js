@@ -130,10 +130,21 @@ const collectNovel = (novelId) => {
 const collectNovelList = () => {
     return http.get('/api/collectList')
 }
+//历史记录
+const getHistoryNovel = () => {
+    return http.get('/api/getHistoryNovel')
+}
 //上传头像
 const upload = (file) => {
-    return http.put('/api/upload',{
+    return http.put('/api/upload', {
         file
+    })
+}
+// 修改用户信息
+const updateUser = (id, userName) => {
+    return http.post('/api/user/updateUserInfo', {
+        id,
+        userName,
     })
 }
 
@@ -155,7 +166,9 @@ const api = {
     getUserInfo,
     collectNovel,
     collectNovelList,
-    upload
+    upload,
+    updateUser,
+    getHistoryNovel,
 
 }
 

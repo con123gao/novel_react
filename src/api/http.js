@@ -31,7 +31,7 @@ const http = function http(config) {
   }
   }
   if(method==='put'||method==='PUT'){
-    headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+    headers['Content-Type'] = 'multipart/form-data;charset=utf-8;boundary=---011000010111000001101001';
   }
 
 
@@ -66,7 +66,8 @@ const http = function http(config) {
   if (/^(POST|PUT|PATCH)$/i.test(method) && body) {
     headers['Content-Type'] = 'application/json';
     if(method==='put'||method==='PUT'){
-      headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+      // headers['Content-Type'] = 'multipart/form-data;charset=utf-8';
+      headers['Content-Type'] = 'multipart/form-data;charset=utf-8;boundary=---011000010111000001101001';
     }
     config.body = JSON.stringify(body);
   }

@@ -22,6 +22,22 @@ const routes = [
         }
     },
     {
+        path: '/advise',
+        name: 'advise',
+        component: lazy(() => import('../views/Advise/Advise')),
+        meta: {
+            title: '建议'
+        }
+    },
+    {
+        path: '/history',
+        name: 'history',
+        component: lazy(() => import('../views/History/History')),
+        meta: {
+            title: '历史记录'
+        }
+    },
+    {
         path: '/show/:novelId/:chapterId/:chapterCount',
         name: 'show',
         component: lazy(() => import('../views/Show/Show')),
@@ -70,7 +86,7 @@ const routes = [
         }
     },
     {
-        path: 'chatgpt',
+        path: '/chatgpt',
         name: 'chatgpt',
         component: lazy(() => import('../views/ChatGpt/ChatGpt')),
         meta: {

@@ -6,6 +6,7 @@ import { ImageUploader, Input, Toast } from 'antd-mobile';
 import { connect } from 'react-redux';
 import action from '../../store/action';
 import api from '../../api';
+import { demoSrc, mockUpload, mockUploadFail } from './utils';
 
 /* 样式 */
 const UpdateBox = styled.div`
@@ -60,32 +61,32 @@ const Update = function Update(props) {
   const uploadImage = async (file) => {
     let temp;
     try {
-      let { code, data: pic } = await api.upload(file);
-      if (+code !== 0) {
+      let { code, data: pic } = await mockUpload(file);
+      console.log(code,pic);
+      if (+code !== 200) {
         Toast.show({
           icon: 'fail',
           content: '上传失败'
         });
         return;
+      }else {
+        Toast.show({
+          icon: 'success',
+          content: '头像更改成功'
+        });
       }
       temp = pic;
       setPic([{
         url: pic
       }]);
     } catch (_) { }
+    queryUserInfoAsync();//同步redux中的信息
     return { url: temp };
   };
 
   /* 提交信息 */
   const submit = async () => {
     // 表单校验
-    if (pic.length === 0) {
-      Toast.show({
-        icon: 'fail',
-        content: '请先上传图片'
-      });
-      return;
-    }
     if (userName.trim() === "") {
       Toast.show({
         icon: 'fail',
@@ -94,10 +95,9 @@ const Update = function Update(props) {
       return;
     }
     // 获取信息，发送请求
-    let [{ url }] = pic;
     try {
-      let { code } = await api.userUpdate(userName.trim(), url);
-      if (+code !== 0) {
+      let { code } = await api.updateUser(info.id,userName.trim());
+      if (+code !== 200) {
         Toast.show({
           icon: 'fail',
           content: '修改信息失败'
@@ -114,7 +114,6 @@ const Update = function Update(props) {
   };
 
   return <UpdateBox>
-    {/* <img src=12e218e20b2d45ce8f810e59e43d3c14"></img> */}
     <NavBarAgain title="修改信息" />
     <div className="formBox">
       <div className="item">
@@ -141,6 +140,7 @@ const Update = function Update(props) {
             }} />
         </div>
       </div>
+
       <ButtonAgain color='primary' className="submit"
         onClick={submit}>
         提交
