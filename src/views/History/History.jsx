@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SwipeAction, Toast } from 'antd-mobile';
+import { SwipeAction, Toast, Button } from 'antd-mobile';
 import styled from "styled-components";
 import { connect } from 'react-redux';
 import action from '../../store/action';
@@ -47,16 +47,16 @@ const History = function History(props) {
     })();
   }, []);
 
-  // 移除收藏
-  const handleRemove = async (id) => {
+  // 删除所有历史记录
+  const delHistory = async () => {
     try {
-      let { msg, code } = await api.collectNovel(+id);
+      let { msg, code } = await api.clearHistory();
       if (+code === 200) {
         Toast.show({
           icon: 'success',
           content: msg
         });
-        let { msg, data } = await api.collectNovelList();
+        let { msg, data } = await api.getHistoryNovel();
         setCollectNovelList([...data]);
       } else {
         Toast.show({
@@ -71,18 +71,15 @@ const History = function History(props) {
 
   return <StoreBox>
     <NavBarAgain title="历史记录" />
+    {/* 一键删除 */}
+    <div style={{float:'right'}}><Button color='danger' onClick={delHistory} >清空历史记录</Button></div>
     {collectNovelList.length !== 0 ?
       <div className="box">
         {collectNovelList.map(item => {
           let { date } = item;
-          return <SwipeAction key={date} rightActions={[{
-            key: 'delete',
-            text: '删除',
-            color: 'danger',
-            onClick: handleRemove.bind(null, date)
-          }]}>
+          return (
             <NovelsItem info={item} />
-          </SwipeAction>;
+          )
         })}
       </div> :
       <SkeletonAgain />

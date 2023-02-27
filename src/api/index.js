@@ -134,6 +134,10 @@ const collectNovelList = () => {
 const getHistoryNovel = () => {
     return http.get('/api/getHistoryNovel')
 }
+//清空所有历史记录
+const clearHistory = () => {
+    return http.get('/api/clearNovel')
+}
 //上传头像
 const upload = (file) => {
     return http.put('/api/upload', {
@@ -169,6 +173,7 @@ const api = {
     upload,
     updateUser,
     getHistoryNovel,
+    clearHistory
 
 }
 
