@@ -10,8 +10,9 @@ import api from '../../api'
 
 const Show = function Show(props) {
   const { navigate } = props
-  const { novelId, chapterId, chapterCount } = props.params
+  const { novelId, chapterId, chapterCount: propsCount } = props.params
   const [chapterName, setChapterName] = useState()
+  const [chapterCount, setChapterCount] = useState(propsCount)
   const [isCollect, setIsCollect] = useState(false)
 
   const base_pre = "http://localhost:8080/book/"
@@ -20,10 +21,13 @@ const Show = function Show(props) {
   let { base: { info: userInfo, location }, queryUserInfoAsync } = props
   useEffect(() => {
     //第一次渲染完。，如果userInfo不存在，我们派发任务同步登陆者信息
-
     if (!userInfo) queryUserInfoAsync();
     //查展示的具体信息
     (async () => {
+      if (chapterCount) {
+        let chapterData = await api.getChapterPageListById(1, 1, novelId)
+        setChapterCount(chapterData.data.total)
+      }
       try {
         let { data: { isCollect, chapterName }, code } = await api.getShowInfo(novelId, chapterId);
         setChapterName(chapterName);
@@ -72,6 +76,7 @@ const Show = function Show(props) {
 
   return (
     <div className='show-box'>
+      {console.log(chapterCount)}
       <h2>{chapterName}</h2>
       <iframe src={base_pre + novelId + '/' + chapterId + '.html'} className='show-iframe'
         border="0"
@@ -99,7 +104,7 @@ const Show = function Show(props) {
               <><LeftOutline /> 已经是第一章</>
             }
           </span>
-          <span className={isCollect?'stored':''} onClick={handleStore} ><StarOutline /></span>
+          <span className={isCollect ? 'stored' : ''} onClick={handleStore} ><StarOutline /></span>
           <span>
             {console.log(+chapterCount, +chapterId)}
             {+chapterCount - +chapterId > 0 ?

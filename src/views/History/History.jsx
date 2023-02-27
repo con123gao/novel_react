@@ -25,16 +25,16 @@ const History = function History(props) {
   useEffect(() => {
     // 第一次加载完毕:看是否登录
     if (!userInfo) queryUserInfoAsync();
-    if (!userInfo) {
-      //未登录
-      Toast.show({
-        icon: 'fail',
-        content: '请先登录'
-      });
-      // 跳转到登录
-      navigate(`/login?to=${location.pathname}`, { replace: true })
-      return;
-    }
+    // if (!userInfo) {
+    //   //未登录
+    //   Toast.show({
+    //     icon: 'fail',
+    //     content: '请先登录'
+    //   });
+    //   // 跳转到登录
+    //   navigate(`/login?to=${location.pathname}`, { replace: true })
+    //   return;
+    // }
 
     //TODO 历史列表
     (async () => {
@@ -45,7 +45,7 @@ const History = function History(props) {
 
       }
     })();
-  }, [collectNovelList]);
+  }, []);
 
   // 移除收藏
   const handleRemove = async (id) => {
@@ -70,16 +70,16 @@ const History = function History(props) {
   };
 
   return <StoreBox>
-    <NavBarAgain title="我的收藏" />
+    <NavBarAgain title="历史记录" />
     {collectNovelList.length !== 0 ?
       <div className="box">
         {collectNovelList.map(item => {
-          let { id } = item;
-          return <SwipeAction key={id} rightActions={[{
+          let { date } = item;
+          return <SwipeAction key={date} rightActions={[{
             key: 'delete',
             text: '删除',
             color: 'danger',
-            onClick: handleRemove.bind(null, id)
+            onClick: handleRemove.bind(null, date)
           }]}>
             <NovelsItem info={item} />
           </SwipeAction>;

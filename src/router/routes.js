@@ -11,12 +11,7 @@ const routes = [
         name: 'chapter',
         // 懒加载
         //缓存
-        component: withKeepAlive(
-            lazy(() => import('../views/Chapter/Chapter')),
-            {
-                cacheId: 'chapter',
-                scroll: true
-            }),
+        component:lazy(() => import('../views/Chapter/Chapter')),
         meta: {
             title: '章节'
         }

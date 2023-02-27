@@ -45,7 +45,7 @@ const Store = function Store(props) {
 
       }
     })();
-  }, [collectNovelList]);
+  }, []);
 
   // 移除收藏
   const handleRemove = async (id) => {
@@ -57,6 +57,7 @@ const Store = function Store(props) {
           content: msg
         });
         let { msg, data } = await api.collectNovelList();
+        setCollectNovelList([])
         setCollectNovelList([...data]);
       } else {
         Toast.show({
