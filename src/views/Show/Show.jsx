@@ -14,7 +14,7 @@ const Show = function Show(props) {
   const [chapterName, setChapterName] = useState()
   const [isCollect, setIsCollect] = useState(false)
 
-  const base_pre = "http://localhost:8080/book/"
+  const base_pre = "http://1.15.179.72:8080/book/"
 
   // ==========下面的逻辑是关于登录/收藏的
   let { base: { info: userInfo, location }, queryUserInfoAsync } = props
