@@ -2,7 +2,6 @@ import {
     lazy
 } from 'react'
 import Home from '../views/Home/Home'
-import { withKeepAlive } from 'keepalive-react-component'
 
 const routes = [
     {
@@ -11,12 +10,7 @@ const routes = [
         name: 'chapter',
         // 懒加载
         //缓存
-        component: withKeepAlive(
-            lazy(() => import('../views/Chapter/Chapter')),
-            {
-                cacheId: 'chapter',
-                scroll: true
-            }),
+        component: lazy(() => import('../views/Chapter/Chapter')),
         meta: {
             title: '章节'
         }
@@ -88,11 +82,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        //缓存
-        component: withKeepAlive(Home, {
-            cacheId: 'home',
-            scroll: true
-        }),
+        component: Home ,
         meta: {
             title: '首页'
         }

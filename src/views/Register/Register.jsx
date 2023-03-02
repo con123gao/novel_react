@@ -106,7 +106,7 @@ export default function Register(props) {
       }
       //发送成功，按钮开始倒计时，不可操作
       setDisabled(true);
-      countDown;
+      countDown();
       if (!timer) timer = setInterval(countDown, 1000);
     } catch (_) {
 

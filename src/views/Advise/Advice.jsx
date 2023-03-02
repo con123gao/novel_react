@@ -1,3 +1,4 @@
+import './Advice.less'
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Space, Steps, Card, Input, Toast } from 'antd-mobile'
 import {
@@ -11,14 +12,13 @@ import { connect } from 'react-redux';
 import action from '../../store/action';
 import SkeletonAgain from '../../components/SkeletonAgain/SkeletonAgain'
 
-const { Step } = Steps
-import './Advice.less'
 import HomeHead from '../../components/HomeHead/HomeHead'
 /**
  * 用纵向步骤条
  * 和卡片
  * @returns 
- */
+*/
+const { Step } = Steps
 const Advice = function Advice(props) {
   const input_advice = useRef();
   let { info, queryUserInfoAsync, navigate } = props;
@@ -61,21 +61,21 @@ const Advice = function Advice(props) {
           >
             {
               adviceList.map((item) => {
-                const { id,createTime, description, status, userName } = item
+                const { id, createTime, description, status, userName } = item
                 return <Step key={id}
-                  title={'日期：'+createTime}
+                  title={'日期：' + createTime}
                   description={
                     <Card
                       headerStyle={{
                         color: '#1677ff',
                       }}
                       bodyClassName={{ 'color': 'var(--adm-color-success)' }}
-                      title={'用户: '+userName}
+                      title={'用户: ' + userName}
                     >
-                      {'建议：'+description}
+                      {'建议：' + description}
                     </Card>
                   }
-                  status={+status===0?'error':'finish'}
+                  status={+status === 0 ? 'error' : 'finish'}
                 />
               })
             }
@@ -86,43 +86,43 @@ const Advice = function Advice(props) {
 
 
       <div className='advice-input'>
-        <Input placeholder=' 请输入内容' clearable 
-        ref={input_advice}
-        onEnterPress={
-          (e) => {
-            let { value: input } = e.target
-            //判断是否登录
-            if (!info) {
-              Toast.show({
-                icon: 'fail',
-                content: '请先登录'
-              })
-              return;
-            }
-
-            //登录了
-            let resData = api.writeAdvice(input);
-            resData.then((data) => {
-              let { msg, code } = data;
-              console.log(code, msg);
-              if (+code === 200) {
-                Toast.show({
-                  icon: 'success',
-                  content: msg
-                })
-
-                // setAdviceList([...a])
-              } else {
+        <Input placeholder=' 请输入内容' clearable
+          ref={input_advice}
+          onEnterPress={
+            (e) => {
+              let { value: input } = e.target
+              //判断是否登录
+              if (!info) {
                 Toast.show({
                   icon: 'fail',
-                  content: msg
+                  content: '请先登录'
                 })
+                return;
               }
-              input_advice.current.clear()
-            })
 
-          }
-        } />
+              //登录了
+              let resData = api.writeAdvice(input);
+              resData.then((data) => {
+                let { msg, code } = data;
+                console.log(code, msg);
+                if (+code === 200) {
+                  Toast.show({
+                    icon: 'success',
+                    content: msg
+                  })
+
+                  // setAdviceList([...a])
+                } else {
+                  Toast.show({
+                    icon: 'fail',
+                    content: msg
+                  })
+                }
+                input_advice.current.clear()
+              })
+
+            }
+          } />
       </div>
     </div>
   )
